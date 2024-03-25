@@ -1,0 +1,3 @@
+- código fonte
+- documento descrevendo a solução (2 pgs a 4 pgs)
+- link no documento (vídeo, 5 minutos, explicando o código e mostrando a execução do programa com os exemplos)

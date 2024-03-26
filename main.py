@@ -1,12 +1,24 @@
+def contar_frequencias(texto):
+  frequencias = {}
+
+  for letra in texto:
+    if letra in frequencias:
+      frequencias[letra] += 1
+    else:
+      frequencias[letra] = 1
+
+  return frequencias
+
+
 def calcular_IC(texto):
-    total_letras = contar_letras(texto)
-    frequencias = contar_frequencias(texto)
-    ic = 0
+  total_letras = len(texto)
+  frequencias = contar_frequencias(texto)
+  letras_ic = {}
 
-    for letra, frequencia in frequencias:
-        ic += (frequencia * (frequencia - 1)) / (total_letras * (total_letras - 1))
+  for frequencia in frequencias:
+    letras_ic[frequencia] = (frequencias[frequencia] * (frequencias[frequencia] - 1)) / (total_letras * (total_letras - 1))
 
-    return ic
+  return letras_ic
 
 
 def dividir_texto_em_grupos(texto, tamanho):
@@ -15,31 +27,36 @@ def dividir_texto_em_grupos(texto, tamanho):
   for i in range(0, len(texto), tamanho):
     grupos.append(texto[i:i+tamanho])
 
+  if len(grupos[-1]) != tamanho:
+    grupos.pop()
+
   return grupos
 
 
 def descobrir_tamanho_chave(texto_cifrado):
-    ic_esperado = 0.0727
-    tamanho_chave = 0
-    melhor_ic = 0
+  english_ic = 0.0686
+  melhor_ic = 0
+  melhor_tamanho_chave = 0
 
-    for tamanho_chave_teste in range(1, 20):
-        grupos = dividir_texto_em_grupos(texto_cifrado, tamanho_chave_teste)
-        soma_ic = 0
+  for tamanho_chave_teste in range(2, 21):
+    grupos = dividir_texto_em_grupos(texto_cifrado, tamanho_chave_teste)
 
-        for grupo in grupos:
-            ic_grupo = calcular_IC(grupo)
-            soma_ic += ic_grupo
+    for grupo in grupos:
+      ic_grupo = calcular_IC(grupo)
+      media_ic_grupo = sum(ic_grupo.values()) / len(ic_grupo)
 
-        ic_medio = soma_ic / tamanho_chave_teste
-        if abs(ic_medio - ic_esperado) < abs(melhor_ic - ic_esperado):
-            melhor_ic = ic_medio
-            tamanho_chave = tamanho_chave_teste
-    
-    return tamanho_chave
+      if abs(media_ic_grupo - english_ic) < abs(melhor_ic - english_ic):
+        melhor_ic = media_ic_grupo
+        melhor_tamanho_chave = tamanho_chave_teste
+  
+  return melhor_tamanho_chave
 
 
-# teste
-texto_cifrado = "WKXVJWJFQZT"
-tamanho_chave = descobrir_tamanho_chave(texto_cifrado)
-print("Tamanho da chave:", tamanho_chave)
+# TESTANDO
+with open("plaintext-english.txt", "r") as file:
+  texto = file.read().replace('\n', '')
+
+# with open("plaintext-portuguese.txt", "r") as file:
+  # texto = file.read().replace('\n', '')
+
+print(descobrir_tamanho_chave(texto))

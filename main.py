@@ -53,7 +53,7 @@ def descobrir_tamanho_chave(texto_cifrado):
 
 
 # TESTANDO
-with open("plaintext-english.txt", "r") as file:
+with open("teste.txt", "r") as file:
   texto = file.read().replace('\n', '')
 
 # with open("plaintext-portuguese.txt", "r") as file:
@@ -74,7 +74,7 @@ def descobrir_chave(tamanho_da_chave):
         letras_melhor_ic[i] = contar_frequencias(letras_melhor_ic[i])
 
     for i in letras_melhor_ic:
-       letras_melhor_ic[i] = get_dict_max(letras_melhor_ic[i])
+       letras_melhor_ic[i] = ord(get_dict_max(letras_melhor_ic[i])) - ord('e')
     
     return letras_melhor_ic
 

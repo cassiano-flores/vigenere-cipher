@@ -59,4 +59,38 @@ with open("plaintext-english.txt", "r") as file:
 # with open("plaintext-portuguese.txt", "r") as file:
   # texto = file.read().replace('\n', '')
 
+def descobrir_chave(tamanho_da_chave):
+    texto_dividido = dividir_texto_em_grupos(texto,tamanho_da_chave)
+    letras_melhor_ic = {}
+    
+    for grupo in texto_dividido:
+        for i in range(tamanho_da_chave):
+            if i in letras_melhor_ic:
+                letras_melhor_ic[i] += grupo[i]
+            else:
+                letras_melhor_ic[i] = grupo[i]
+    
+    for i in letras_melhor_ic:
+        letras_melhor_ic[i] = contar_frequencias(letras_melhor_ic[i])
+
+    
+
+    for i in letras_melhor_ic:
+       letras_melhor_ic[i] = chr(ord(get_dict_max(letras_melhor_ic[i])))
+    
+    
+    return letras_melhor_ic
+
+def get_dict_max(dict):
+   max = -1;
+   letter = "";
+   for e in dict.keys():
+    if(dict[e] >= max):
+       max = dict[e]
+       letter = e
+
+    return letter
+
+
 print(descobrir_tamanho_chave(texto))
+print(descobrir_chave(descobrir_tamanho_chave(texto)))

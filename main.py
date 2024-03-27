@@ -73,24 +73,20 @@ def descobrir_chave(tamanho_da_chave):
     for i in letras_melhor_ic:
         letras_melhor_ic[i] = contar_frequencias(letras_melhor_ic[i])
 
-    
-
     for i in letras_melhor_ic:
-       letras_melhor_ic[i] = chr(ord(get_dict_max(letras_melhor_ic[i])))
-    
+       letras_melhor_ic[i] = get_dict_max(letras_melhor_ic[i])
     
     return letras_melhor_ic
 
 def get_dict_max(dict):
-   max = -1;
-   letter = "";
-   for e in dict.keys():
+  max = -1;
+  letter = "";
+  for e in dict.keys():
     if(dict[e] >= max):
-       max = dict[e]
-       letter = e
+      max = dict[e]
+      letter = e
 
-    return letter
-
+  return letter
 
 print(descobrir_tamanho_chave(texto))
 print(descobrir_chave(descobrir_tamanho_chave(texto)))
